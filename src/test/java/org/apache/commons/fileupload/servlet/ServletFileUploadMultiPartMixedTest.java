@@ -24,18 +24,15 @@ public class ServletFileUploadMultiPartMixedTest {
 					"\r\n" +
 					"This is the content of the file\n" +
 					"\r\n" +
-					"-----1234\r\n";
+					"-----1234--\r\n";
 
-		byte[] bytes = text.getBytes("UTF-8");
-		HttpServletRequest request = new MockHttpServletRequest(bytes, "multipart/mixed;boundary=-----1234;charset=UTF-8");
+		byte[] bytes = text.getBytes("US-ASCII");
+		HttpServletRequest request = new MockHttpServletRequest(bytes, "multipart/mixed; boundary=---1234");
 
 		DiskFileItemFactory fileItemFactory = new DiskFileItemFactory();
-		fileItemFactory.setDefaultCharset("UTF-8");
 		ServletFileUpload upload = new ServletFileUpload(fileItemFactory);
 		List<FileItem> fileItems = upload.parseRequest(request);
 		Assert.assertNotNull(fileItems);
 		Assert.assertEquals(1, fileItems.size());
-		FileItem fileItem = fileItems.get(0);
-		assertTrue(fileItem.getString(), fileItem.getString().contains("coñteñt"));
 	}
 }
